@@ -1,0 +1,13 @@
+# SPA fallback - EXCLUYE assets y archivos estaticos
+/assets/*  /assets/:splat  200
+/favicon.svg   /favicon.svg   200
+/logo.svg  /logo.svg  200
+/manifest.json  /manifest.json  200
+/robots.txt  /robots.txt  200
+/sitemap.xml  /sitemap.xml  200
+/_redirects  /_redirects  200
+/_headers  /_headers  200
+
+# Solo rutas SPA -> index.html
+/api/*    /index.html   200
+/*        /index.html   200

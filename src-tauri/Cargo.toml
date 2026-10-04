@@ -1,0 +1,79 @@
+[package]
+name = "mozona-tpv"
+version = "0.1.0"
+description = "MOZONA TPV — Local-First POS for hospitality"
+authors = ["MOZONA TPV"]
+edition = "2021"
+rust-version = "1.75"
+
+[lib]
+name = "mozona_tpv_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# --- Tauri v2 ---
+tauri = { version = "2", features = [] }
+tauri-plugin-shell = "2"          # abrir URLs / shell local
+tauri-plugin-dialog = "2"         # selector de archivos (imagen carta)
+tauri-plugin-fs    = "2"          # lectura/escritura de archivos
+tauri-plugin-http  = { version = "2", features = ["unsafe-headers"] }
+
+# --- Async runtime ---
+tokio = { version = "1", features = ["full"] }
+futures = "0.3"
+async-trait = "0.1"
+
+# --- DB local (SQLite embebido) ---
+rusqlite = { version = "0.32", features = ["bundled", "chrono"] }
+r2d2 = "0.8"
+r2d2_sqlite = "0.25"
+
+# --- Hardware: USB + puerto serie ---
+rusb       = "0.9"            # libusb binding (Win/macOS/Linux)
+serialport = "4.5"            # /dev/ttyUSB*, COM*, etc.
+
+# --- Red: servidor HTTP + WebSocket para LAN ---
+axum = { version = "0.7", features = ["ws", "macros"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["cors", "trace"] }
+hyper = "1"
+
+# --- Cliente HTTP (sync contra Supabase) ---
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "stream"] }
+
+# --- Utilidades ---
+serde        = { version = "1", features = ["derive"] }
+serde_json   = "1"
+uuid         = { version = "1", features = ["v4", "serde"] }
+chrono       = { version = "0.4", features = ["serde"] }
+sha2         = "0.10"
+hex          = "0.4"
+thiserror    = "2"
+anyhow       = "1"
+qrcode       = { version = "0.14", default-features = false, features = ["svg"] }
+log          = "0.4"
+env_logger   = "0.11"
+local-ipaddress = "0.6"
+dirs         = "5"
+once_cell    = "1"
+parking_lot  = "0.12"
+url          = "2"
+rand         = "0.8"
+base64       = "0.22"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.dev]
+incremental = true
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true

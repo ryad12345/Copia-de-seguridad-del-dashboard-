@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+        <meta name="theme-color" content="#2563EB" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="MOZONA TPV" />
+        <meta name="description" content="Sistema TPV Local-First para hostelería con cumplimiento VeriFactu" />
+        <meta name="format-detection" content="telephone=no" />
+
+        <!-- ★ v1.9.48: Dominio oficial -->
+        <link rel="canonical" href="https://mozonatpv.site/" />
+
+        <!-- Open Graph -->
+        <meta property="og:title" content="MOZONA TPV — Tu negocio bajo control" />
+        <meta property="og:description" content="TPV en la nube para hostelería: comanderos móviles, mesas, VeriFactu, impresoras térmicas y sincronización en tiempo real." />
+        <meta property="og:url" content="https://mozonatpv.site/" />
+        <meta property="og:image" content="https://mozonatpv.site/logo.svg" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="es_ES" />
+        <meta property="og:site_name" content="MOZONA TPV" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="MOZONA TPV" />
+        <meta name="twitter:description" content="Tu TPV de hostelería, en la nube y en tu local." />
+        <meta name="twitter:image" content="https://mozonatpv.site/logo.svg" />
+
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <title>MOZONA TPV — Tu negocio bajo control</title>
+
+        <!-- ★ POLYFILLS RUNTIME para tablets antiguas (Android 4.4-7, Chrome 40-55) -->
+        <script>
+            // 1) globalThis (Node 12+ / Chrome 71+)
+            if (typeof globalThis === 'undefined') {
+                window.globalThis = window;
+            }
+            // 2) ResizeObserver (no existe en Safari < 13, Chrome < 64)
+            if (typeof window.ResizeObserver === 'undefined') {
+                window.ResizeObserver = class {
+                    observe() {} unobserve() {} disconnect() {}
+                };
+            }
+            // 3) structuredClone (Chrome 98+)
+            if (typeof window.structuredClone === 'undefined') {
+                window.structuredClone = function(o) { return JSON.parse(JSON.stringify(o)); };
+            }
+            // 4) Array.prototype.flat (Chrome 69+)
+            if (!Array.prototype.flat) {
+                Array.prototype.flat = function() {
+                    var depth = arguments[0], arr = this;
+                    depth = depth === undefined ? 1 : depth;
+                    function flatten(a, d) {
+                        if (d <= 0) return a.slice();
+                        return [].concat.apply([], a.map(function(x) {
+                            return Array.isArray(x) ? flatten(x, d - 1) : [x];
+                        }));
+                    }
+                    return depth === Infinity ? (function loop(a) {
+                        return [].concat.apply([], a.map(function(x) {
+                            return Array.isArray(x) ? loop(x) : [x];
+                        }));
+                    })(arr) : flatten(arr, depth);
+                };
+            }
+            // 5) Object.fromEntries (Chrome 73+)
+            if (!Object.fromEntries) {
+                Object.fromEntries = function(iter) {
+                    var obj = {};
+                    iter.forEach(function(kv) { obj[kv[0]] = kv[1]; });
+                    return obj;
+                };
+            }
+            // 6) String.prototype.replaceAll (Chrome 85+)
+            if (!String.prototype.replaceAll) {
+                String.prototype.replaceAll = function(s, r) {
+                    return this.split(s).join(r);
+                };
+            }
+        </script>
+
+        <!-- ★ Captura de errores de arranque: solo registra en consola -->
+        <script>
+            window.__mozona_start_errors__ = [];
+            window.addEventListener('error', function(e) {
+                var msg = (e.error && e.error.stack) || (e.message + ' en ' + e.filename + ':' + e.lineno);
+                window.__mozona_start_errors__.push(msg);
+                console.error('[MOZONA] error de arranque:', msg);
+            });
+            window.addEventListener('unhandledrejection', function(e) {
+                var msg = (e.reason && e.reason.stack) || String(e.reason);
+                window.__mozona_start_errors__.push('PROMISE: ' + msg);
+                console.error('[MOZONA] promise rechazada:', msg);
+            });
+        </script>
+        <!-- ★ v1.9.44: Script de invalidación MOVIDO al final del <body>
+             para evitar problemas con Smart TV que ejecutan scripts en el <head>
+             antes de que el DOM esté listo. -->
+    </head>
+    <body>
+        <div id="root">
+            <!-- ★ v4.0.3: Fallback HTML puro (blindaje total)
+                 Si React falla al cargar o se rompe, esto aparece
+                 en lugar de pantalla en blanco o error tecnico. -->
+            <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#f8fafc 0%,#ede9fe 50%,#dbeafe 100%);color:#0f172a;padding:24px;text-align:center">
+                <div style="width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,#7c3aed 0%,#2563eb 100%);display:flex;align-items:center;justify-content:center;margin-bottom:20px;box-shadow:0 10px 30px rgba(124,58,237,0.3)">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3h18v18H3z"/><path d="M8 9h8"/><path d="M8 13h8"/><path d="M8 17h5"/>
+                    </svg>
+                </div>
+                <h1 style="font-size:24px;font-weight:900;margin:0 0 6px 0;letter-spacing:-0.5px">MOZONA TPV</h1>
+                <p style="font-size:14px;color:#64748b;margin:0 0 24px 0">Cargando el sistema...</p>
+                <div style="width:120px;height:4px;background:#e2e8f0;border-radius:999px;overflow:hidden">
+                    <div style="width:40%;height:100%;background:linear-gradient(90deg,#7c3aed,#2563eb);border-radius:999px;animation:mozona-init 1.4s ease-in-out infinite"></div>
+                </div>
+            </div>
+            <style>@keyframes mozona-init{0%{transform:translateX(-150%)}50%{transform:translateX(80%)}100%{transform:translateX(380%)}}</style>
+        </div>
+        <noscript>
+            <div style="padding:2rem;font-family:system-ui;text-align:center;background:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                <h1 style="color:#0f172a">MOZONA TPV requiere JavaScript</h1>
+                <p style="color:#64748b">Por favor, habilita JavaScript para usar esta aplicación.</p>
+            </div>
+        </noscript>
+        <script type="module" src="/src/main.tsx"></script>
+        <!-- ★ v1.9.44: Script de invalidación de caché MOVIDO al final del body
+             para evitar problemas con Smart TV que ejecutan scripts antes
+             de que el DOM esté listo. Sintaxis ES5 pura + try-catch global. -->
+        <script>
+        (function(){
+            try {
+                var CURRENT = 'v4.0.7-industrial-final';
+                var LS_KEY = 'mozona.build_version';
+                var stored = null;
+                try { stored = localStorage.getItem(LS_KEY); } catch(e) {}
+
+                if (stored !== null && stored !== CURRENT) {
+                    try { console.log('[v1.9.44] build changed', stored, '->', CURRENT); } catch(e) {}
+
+                    // localStorage cleanup
+                    try {
+                        for (var i = 0; i < localStorage.length; i++) {
+                            var k = localStorage.key(i);
+                            if (k && k.indexOf('mozona.') === 0 && k !== LS_KEY && k !== 'mozona.cash_closures') {
+                                try { localStorage.removeItem(k); } catch(e) {}
+                            }
+                        }
+                    } catch(e) {}
+                    try { sessionStorage.clear(); } catch(e) {}
+
+                    // Unregister SW
+                    try {
+                        if ('serviceWorker' in navigator) {
+                            navigator.serviceWorker.getRegistrations().then(function(regs) {
+                                try {
+                                    for (var j = 0; j < regs.length; j++) {
+                                        regs[j].unregister();
+                                    }
+                                } catch(e) {}
+                            })['catch'](function(){});
+                        }
+                    } catch(e) {}
+
+                    // Clear caches
+                    try {
+                        if ('caches' in window) {
+                            caches.keys().then(function(keys) {
+                                try {
+                                    for (var m = 0; m < keys.length; m++) {
+                                        caches['delete'](keys[m]);
+                                    }
+                                } catch(e) {}
+                            })['catch'](function(){});
+                        }
+                    } catch(e) {}
+
+                    try { localStorage.setItem(LS_KEY, CURRENT); } catch(e) {}
+
+                    // Recarga simple (sin query string, sin cache-bust agresivo)
+                    setTimeout(function() {
+                        try { location.reload(); } catch(e) {}
+                    }, 1000);
+                    return;
+                }
+
+                try { localStorage.setItem(LS_KEY, CURRENT); } catch(e) {}
+
+                // SW waiting → skipWaiting
+                try {
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.getRegistration().then(function(reg) {
+                            try {
+                                if (reg && reg.waiting) {
+                                    reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+                                }
+                            } catch(e) {}
+                        })['catch'](function(){});
+
+                        var refreshing = false;
+                        navigator.serviceWorker.addEventListener('controllerchange', function() {
+                            if (refreshing) return;
+                            refreshing = true;
+                            try { location.reload(); } catch(e) {}
+                        });
+                    }
+                } catch(e) {}
+            } catch(e) {
+                // ★ v1.9.44: Cualquier error en el script de invalidación
+                // se silencia para que NO impida cargar el bundle principal.
+                try { console.error('[v1.9.44] cache script error:', e); } catch(_) {}
+            }
+        })();
+        </script>
+    </body>
+</html>

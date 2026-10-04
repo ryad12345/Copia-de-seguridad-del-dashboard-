@@ -1,0 +1,306 @@
+/* =====================================================================
+   MOZONA TPV — globals.css
+   Tailwind directives + retoques iOS-style (animaciones, scrollbars)
+   ★ v4.3.0: theme dark/light + acento via CSS vars
+   ===================================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --brand-color: #2563EB;
+        --accent-500: #3b82f6;
+        --accent-600: #2563eb;
+        --accent-700: #1d4ed8;
+        --accent-50: #eff6ff;
+        --accent-fg: #ffffff;
+        --btn-scale: 1;
+        --grid-gap: 8px;
+        /* iOS safe-areas — caen a 0 en navegadores sin notch */
+        --sat:  env(safe-area-inset-top,    0px);
+        --sab:  env(safe-area-inset-bottom, 0px);
+        --sal:  env(safe-area-inset-left,   0px);
+        --sar:  env(safe-area-inset-right,  0px);
+    }
+
+    /* DARK MODE — cuando html.theme-dark */
+    html.theme-dark,
+    html.theme-dark body {
+        background-color: #0f172a !important;
+        color: #e2e8f0 !important;
+    }
+    html.theme-dark .bg-white { background-color: #1e293b !important; }
+    html.theme-dark .bg-slate-50 { background-color: #1e293b !important; }
+    html.theme-dark .bg-slate-100 { background-color: #334155 !important; }
+    html.theme-dark .bg-slate-200 { background-color: #475569 !important; }
+    html.theme-dark .text-slate-900 { color: #f1f5f9 !important; }
+    html.theme-dark .text-slate-800 { color: #e2e8f0 !important; }
+    html.theme-dark .text-slate-700 { color: #cbd5e1 !important; }
+    html.theme-dark .text-slate-600 { color: #94a3b8 !important; }
+    html.theme-dark .text-slate-500 { color: #94a3b8 !important; }
+    html.theme-dark .border-slate-200 { border-color: #334155 !important; }
+    html.theme-dark .border-slate-300 { border-color: #475569 !important; }
+    html.theme-dark .divide-slate-200 > * + * { border-color: #334155 !important; }
+
+    /* LIGHT MODE explícito (cuando html.theme-light) */
+    html.theme-light,
+    html.theme-light body {
+        background-color: #F0F2F5 !important;
+        color: #0f172a !important;
+    }
+
+    html, body, #root {
+        height: 100%;
+    }
+
+    body {
+        font-family:
+            -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+            "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+        font-feature-settings: "ss01", "cv11";
+        /* Evita el "bounce" de scroll en iOS al usar vistas fixed */
+        overscroll-behavior-y: contain;
+    }
+
+    /* Números tabulares para todos los importes */
+    .tabular-nums, [class*="font-black"] {
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* Scrollbar estilo iOS — desktop */
+    *::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    *::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    *::-webkit-scrollbar-thumb {
+        @apply bg-slate-300 rounded-full;
+    }
+    *::-webkit-scrollbar-thumb:hover {
+        @apply bg-slate-400;
+    }
+
+    /* Inputs y botones: evita el "tap highlight" azul en iOS */
+    button, a, input, select, textarea {
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+/* Estilos compartidos para inputs de formularios ------------------- */
+@layer components {
+    .input,
+    input[type="text"].input,
+    input[type="email"].input,
+    input[type="password"].input,
+    input[type="number"].input,
+    input[type="url"].input,
+    input[type="tel"].input,
+    input[type="search"].input {
+        @apply w-full h-11 px-3
+               rounded-xl border border-slate-200
+               text-[14px]
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-100
+               outline-none transition
+               placeholder:text-slate-400;
+    }
+    textarea.input {
+        @apply h-auto py-2.5;
+    }
+}
+
+@layer utilities {
+    /* ---- Viewport dinámico (iOS Safari) ------------------------- */
+    .h-dvh   { height: 100dvh; }
+    .min-h-dvh { min-height: 100dvh; }
+    .max-h-dvh { max-height: 100dvh; }
+
+    /* ---- Safe-areas para iPhone con notch ----------------------- */
+    .pt-safe { padding-top:    var(--sat); }
+    .pb-safe { padding-bottom: var(--sab); }
+    .pl-safe { padding-left:   var(--sal); }
+    .pr-safe { padding-right:  var(--sar); }
+
+    /* ---- Scroll horizontal sin scrollbar visible -------------- */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ---- Animación del toast del SaveButton -------------------- */
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translate(-50%, -10px); }
+        to   { opacity: 1; transform: translate(-50%, 0); }
+    }
+    .animate-fadeInDown {
+        animation: fadeInDown 0.2s ease-out;
+    }
+
+    /* ---- Slide-up para mobile tabs ----------------------------- */
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-slide-up {
+        animation: slideUp 0.18s ease-out;
+    }
+
+    /* ---- Tinte basado en --brand-color (utility) --------------- */
+    .bg-brand {
+        background-color: var(--brand-color);
+    }
+    .text-brand {
+        color: var(--brand-color);
+    }
+    .border-brand {
+        border-color: var(--brand-color);
+    }
+    .ring-brand {
+        --tw-ring-color: var(--brand-color);
+    }
+}
+
+/* =====================================================================
+   MOZONA TPV — Reglas de impresión térmica 58mm
+   Papel térmico de 58mm, alto contraste, monoespaciado.
+   Solo el wrapper #ticket-print-area se imprime.
+   ===================================================================== */
+
+@media print {
+    /* Papel térmico 58mm — sin márgenes */
+    @page { size: 58mm auto; margin: 0mm !important; }
+
+    /* Reset: blanco y negro, alto contraste */
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        width: 58mm !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Esconder TODO el body */
+    body * { visibility: hidden; }
+
+    /* Mostrar SOLO el wrapper de impresión */
+    #ticket-print-area,
+    #ticket-print-area * {
+        visibility: visible;
+    }
+
+    /* El ticket en sí — ancho 54mm imprimible seguro */
+    #ticket-print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 54mm !important;
+        margin: 0 2mm !important;
+        padding: 2mm 0 !important;
+        box-sizing: border-box;
+        color: #000000 !important;
+        background: #ffffff !important;
+        font-family: "Courier New", Courier, monospace !important;
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        -webkit-font-smoothing: none !important;
+        text-rendering: geometricPrecision !important;
+    }
+
+    /* Filas con alineación perfecta (label/precio) */
+    .ticket-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: baseline !important;
+        width: 100% !important;
+        margin-bottom: 1.5px;
+    }
+    .ticket-row .desc {
+        flex: 1 1 auto;
+        text-align: left;
+        word-break: break-word;
+        padding-right: 4px;
+    }
+    .ticket-row .price {
+        flex: 0 0 auto;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    /* Separadores: línea discontinua */
+    .ticket-divider {
+        border: none !important;
+        border-top: 1px dashed #000000 !important;
+        margin: 3px 0 !important;
+    }
+
+    /* Total destacado */
+    .ticket-total {
+        font-size: 14px !important;
+        font-weight: 900 !important;
+    }
+
+    /* Marca de software al pie (watermark) */
+    .ticket-footer-brand {
+        margin-top: 6px;
+        font-size: 9.5px !important;
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
+
+    /* Eliminar TODO fondo de color que pueda manchar el ticket */
+    * {
+        background: #ffffff !important;
+        color: #000000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+        animation: none !important;
+        transition: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+    }
+
+    /* Esconder todo lo que no sea ticket */
+    .no-print, header, nav, aside, button, [role="button"],
+    .PosTopBar, .AppShell-header, .tab-bar, .modal,
+    .pos-catalog, .pos-order, .settings-tabs {
+        display: none !important;
+    }
+
+    /* Compatibilidad con clases antiguas */
+    .ticket, .printable {
+        display: block !important;
+        position: static !important;
+        visibility: visible !important;
+        width: 72mm !important;
+        max-width: 72mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        color: #000000 !important;
+        background: #ffffff !important;
+    }
+
+    /* Bordes del ticket: línea negra sólida */
+    .ticket hr, .printable hr,
+    .ticket .border-b, .printable .border-b,
+    .ticket .border-t, .printable .border-t,
+    .ticket [class*="border"] {
+        border-color: #000000 !important;
+        border-style: solid !important;
+    }
+
+    /* Tablas del ticket: bordes negros */
+    .ticket table, .printable table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        color: #000000 !important;
+    }
+    .ticket th, .ticket td, .printable th, .printable td {
+        border-color: #000000 !important;
+        color: #000000 !important;
+        padding: 1mm 0 !important;
+    }
+}

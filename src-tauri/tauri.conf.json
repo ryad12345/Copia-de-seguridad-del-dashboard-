@@ -1,0 +1,50 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "MOZONA TPV",
+  "version": "0.1.0",
+  "identifier": "es.mozona.tpv",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:5173",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "MOZONA TPV",
+        "width": 1366,
+        "height": 900,
+        "minWidth": 1024,
+        "minHeight": 700,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": true,
+        "transparent": false,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self' ipc: http://ipc.localhost; img-src 'self' data: asset: http://asset.localhost; connect-src 'self' ipc: http://ipc.localhost http://192.168.0.0/16 http://10.0.0.0/8 http://172.16.0.0/12 https://*.supabase.co wss://*.supabase.co; style-src 'self' 'unsafe-inline'; script-src 'self'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "category": "Business",
+    "copyright": "© 2025 MOZONA TPV",
+    "shortDescription": "MOZONA TPV — Local-First POS",
+    "longDescription": "Sistema TPV multi-tenant con cumplimiento VeriFactu. Funciona 100% offline.",
+    "publisher": "MOZONA TPV",
+    "homepage": "https://mozona.es"
+  },
+  "plugins": {}
+}

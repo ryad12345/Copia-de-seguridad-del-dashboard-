@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MOZONA TPV · Migración SQL #49 — Sistema Completo</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #312e81 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container { max-width: 920px; margin: 0 auto; }
+        .hero {
+            text-align: center;
+            padding: 50px 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 32px;
+        }
+        .hero h1 {
+            font-size: 36px;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+            font-weight: 900;
+        }
+        .hero p { font-size: 18px; color: #94a3b8; line-height: 1.6; max-width: 600px; margin: 0 auto; }
+        .version { display: inline-block; margin-top: 20px; padding: 6px 16px; background: rgba(139,92,246,0.2); border: 1px solid #8b5cf6; border-radius: 999px; font-size: 13px; font-weight: 700; color: #c4b5fd; }
+        .section {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+        .section h2 { color: #fff; font-size: 22px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+        .section h2 .badge { background: linear-gradient(135deg, #10b981, #059669); color: #fff; font-size: 11px; padding: 4px 10px; border-radius: 6px; font-weight: 800; }
+        .section p { color: #94a3b8; line-height: 1.7; margin-bottom: 12px; }
+        .step {
+            display: flex;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .step:last-child { border-bottom: none; }
+        .step-num {
+            flex-shrink: 0;
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff; font-weight: 800;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+        }
+        .step-content h3 { color: #f1f5f9; font-size: 16px; margin-bottom: 4px; }
+        .step-content p { font-size: 14px; margin: 0; }
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+        .download-card {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 12px;
+            padding: 18px;
+            transition: all 0.2s;
+        }
+        .download-card:hover { border-color: #8b5cf6; transform: translateY(-2px); }
+        .download-card .num { font-size: 11px; color: #8b5cf6; font-weight: 800; margin-bottom: 6px; letter-spacing: 1px; }
+        .download-card h4 { color: #fff; font-size: 15px; margin-bottom: 8px; }
+        .download-card p { color: #94a3b8; font-size: 12px; line-height: 1.5; margin-bottom: 14px; }
+        .download-card a {
+            display: inline-block;
+            padding: 8px 14px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            font-weight: 700;
+            font-size: 12px;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+        .warning {
+            background: rgba(239,68,68,0.1);
+            border-left: 4px solid #ef4444;
+            padding: 16px 18px;
+            border-radius: 8px;
+            color: #fca5a5;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 14px 0;
+        }
+        .success {
+            background: rgba(16,185,129,0.1);
+            border-left: 4px solid #10b981;
+            padding: 16px 18px;
+            border-radius: 8px;
+            color: #6ee7b7;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 14px 0;
+        }
+        code {
+            background: rgba(0,0,0,0.4);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #fbbf24;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Migración SQL #49</h1>
+            <p>Sistema completo de persistencia con funciones <strong>SECURITY DEFINER</strong>, verificación de email con código OTP y motor de IA conectado directamente a tu base de datos.</p>
+            <div class="version">v4.0.7 · definer-rpc · 23 KB · 9 funciones SQL</div>
+        </div>
+
+        <div class="section">
+            <h2>¿Qué consigues con esta migración?</h2>
+            <div class="success">
+                <strong>Persistencia garantizada.</strong> Tus cambios se guardan en base de datos sin depender de servicios externos.<br>
+                <strong>Verificación por código.</strong> Sistema OTP propio que envía códigos de 6 dígitos al email del usuario.<br>
+                <strong>IA conectada a tu negocio.</strong> El AI Studio ahora consulta directamente tus ventas, productos y márgenes.
+            </div>
+            <p>Esta migración añade <strong>9 funciones RPC</strong> con seguridad <code>SECURITY DEFINER</code> que el frontend puede llamar directamente. No necesitas desplegar Edge Functions ni mantener servicios externos.</p>
+        </div>
+
+        <div class="section">
+            <h2>Instrucciones de instalación <span class="badge">3 MINUTOS</span></h2>
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h3>Abre el editor SQL de Supabase</h3>
+                    <p>En tu proyecto Supabase, ve a <code>SQL Editor</code> desde el menú lateral izquierdo.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h3>Copia el contenido del archivo SQL #49</h3>
+                    <p>Descarga el archivo abajo. Tiene ~24 KB con 9 funciones y sus permisos.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h3>Pega y ejecuta</h3>
+                    <p>Pega el contenido en el editor y pulsa <code>Run</code>. La operación es idempotente: si ya estaba aplicado, simplemente se actualiza.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <h3>Verifica el mensaje final</h3>
+                    <p>Al final del log deberías ver un mensaje <code>MOZONA TPV — SQL #49 APLICADO</code> con el conteo de funciones y tablas creadas.</p>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>Importante:</strong> Esta migración es independiente del resto. Si tienes aplicados SQL #43, #44, #45, #46 y #48, esta se añade limpiamente sobre ellos. Si no, este SQL es autocontenido y crea todo lo necesario.
+            </div>
+
+            <div class="success">
+                <strong>⚠️ Paso adicional crítico en Supabase (Authentication):</strong><br><br>
+                Para que el registro funcione sin enviar emails (no tienes SMTP configurado), ve a:<br>
+                <code>Authentication → Providers → Email → Confirm email</code><br>
+                y <strong>DESACTÍVALO</strong>.<br><br>
+                Sin esto, Supabase exigirá confirmación de email y los nuevos usuarios no podrán iniciar sesión aunque hayan introducido bien la contraseña.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📦 Archivos a descargar e instalar</h2>
+            <div class="download-grid">
+                <div class="download-card">
+                    <div class="num">SQL #49 — REQUERIDO</div>
+                    <h4>Funciones SECURITY DEFINER</h4>
+                    <p>9 funciones RPC para persistencia + OTP + IA Studio. 23 KB. Idempotente.</p>
+                    <a href="/database/49_secure_definer_functions.sql" download>⬇️ Descargar SQL #49</a>
+                </div>
+                <div class="download-card">
+                    <div class="num">SQL #52 — REQUERIDO</div>
+                    <h4>Sistema de email transaccional (Resend)</h4>
+                    <p>Tabla email_outbox + RPCs para generar, verificar y enviar códigos OTP via Resend API.</p>
+                    <a href="/database/52_email_outbox_resend.sql" download>⬇️ Descargar SQL #52</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Configuración de Resend (3 minutos)</h2>
+            <div class="success">
+                <strong>Por qué Resend:</strong> Plan gratuito = <strong>100 emails/día</strong>, sin tarjeta de crédito, entrega profesional sin marcas de agua.
+            </div>
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h3>Crea cuenta gratuita en Resend</h3>
+                    <p>Ve a <code>https://resend.com/signup</code> y registra tu cuenta con el email <code>rofixinsta@gmail.com</code>.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h3>Obtén tu API Key</h3>
+                    <p>En el dashboard de Resend → <code>API Keys</code> → <code>Create API Key</code>. Copia la clave (empieza por <code>re_...</code>).</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h3>Configura el Secret en Supabase Edge Functions</h3>
+                    <p>Ve a Supabase → <code>Edge Functions</code> → <code>Manage Secrets</code>. Añade:</p>
+                    <p><code>RESEND_API_KEY</code> = tu clave de Resend<br>
+                    <code>RESEND_FROM_EMAIL</code> = <code>onboarding@resend.dev</code> (dominio de prueba) o tu dominio verificado</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <h3>Despliega la Edge Function</h3>
+                    <p>Ve a <code>Edge Functions</code> → <code>New function</code> → nombre: <code>send-email</code>. Pega el código Deno del archivo SQL #52 (sección 6 del archivo).</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">5</div>
+                <div class="step-content">
+                    <h3>Programa el cron (opcional)</h3>
+                    <p>Para que los emails se envíen automáticamente cada minuto, en Supabase SQL Editor ejecuta:</p>
+                    <p><code>SELECT cron.schedule('send-emails', '* * * * *', $$ ... $$);</code></p>
+                    <p>(El código exacto está en SQL #52 sección 6.)</p>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>Mientras tanto:</strong> La Edge Function se puede invocar manualmente desde cualquier cliente via:
+                <br><code>supabase.functions.invoke('send-email', { body: {} })</code>
+                <br>El frontend ya hace esto automáticamente tras generar el código OTP.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Migraciones complementarias (opcional)</h2>
+            <p>Si aún no las has aplicado, estas mejoran el sistema completo.</p>
+            <div class="download-grid">
+                <div class="download-card">
+                    <div class="num">SQL #43</div>
+                    <h4>Soft Deletes Robustos</h4>
+                    <p>Eliminación segura con auditoría, restore, trigger anti-hard-delete y vistas activas.</p>
+                    <a href="/database/43_soft_deletes_robust.sql" download>⬇️ Descargar</a>
+                </div>
+                <div class="download-card">
+                    <div class="num">SQL #44</div>
+                    <h4>Profiles y App Settings</h4>
+                    <p>Tabla de perfiles con is_superadmin, trigger auto-creación y configuración global.</p>
+                    <a href="/database/44_create_edge_functions.sql" download>⬇️ Descargar</a>
+                </div>
+                <div class="download-card">
+                    <div class="num">SQL #45</div>
+                    <h4>RLS en Settings</h4>
+                    <p>Habilita Row Level Security en tablas de configuración que estaban abiertas.</p>
+                    <a href="/database/45_secure_settings_tables.sql" download>⬇️ Descargar</a>
+                </div>
+                <div class="download-card">
+                    <div class="num">SQL #46</div>
+                    <h4>Datos del Tenant VIP</h4>
+                    <p>Actualiza el tenant "El Rincón de Casablanca" con nombre, CIF, dirección y estado activo.</p>
+                    <a href="/database/46_complete_vip_tenant.sql" download>⬇️ Descargar</a>
+                </div>
+                <div class="download-card">
+                    <div class="num">SQL #48</div>
+                    <h4>Edge Function admin-ops v2</h4>
+                    <p>Código completo de la Edge Function admin-ops para desplegar (9 acciones).</p>
+                    <a href="/database/48_admin_ops_complete_v2.sql" download>⬇️ Descargar</a>
+                </div>
+                <div class="download-card">
+                    <div class="num">SQL #50</div>
+                    <h4>Honeypots + Blacklist</h4>
+                    <p>Tablas security_events, global_blacklist, honeypot_hits + 3 RPCs de seguridad.</p>
+                    <a href="/database/50_security_honeypots.sql" download>⬇️ Descargar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Cómo probar que funciona</h2>
+            <div class="success">
+                <strong>Tras aplicar SQL #49, prueba lo siguiente:</strong><br><br>
+                1. Inicia sesión en <a href="/" style="color:#60a5fa;">mozonatpv.site</a> con tu email VIP<br>
+                2. Ve a <strong>Personalización</strong> y cambia el ancho del ticket (48/58/80mm)<br>
+                3. Pulsa <strong>Guardar</strong> y verifica que aparece el mensaje de confirmación<br>
+                4. Recarga la página y comprueba que los cambios persisten<br>
+                5. Ve a <strong>AI Studio</strong> y prueba cada pestaña (Facturas, Voz, Socio, etc.)<br>
+                6. Cierra sesión y vuelve a entrar para verificar el flujo OTP
+            </div>
+        </div>
+
+        <div class="footer">
+            MOZONA TPV v4.0.7 · Sistema de TPV multi-tenant local-first<br>
+            <a href="/" style="color:#60a5fa;">← Volver a la app</a>
+        </div>
+    </div>
+</body>
+</html>

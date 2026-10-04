@@ -1,0 +1,14 @@
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.supabase.co https://hcqkpokodrqimkulporw.supabase.co; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://*.supabase.co https://hcqkpokodrqimkulporw.supabase.co wss://*.supabase.co wss://hcqkpokodrqimkulporw.supabase.co; worker-src 'self' blob:; frame-ancestors 'self'; form-action 'self'; base-uri 'self'
+
+/api/*
+  Cache-Control: no-store
+
+/database/*.sql
+  Cache-Control: public, max-age=300
+  Content-Type: text/plain; charset=utf-8

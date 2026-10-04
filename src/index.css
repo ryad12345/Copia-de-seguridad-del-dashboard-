@@ -1,0 +1,296 @@
+
+/* =====================================================================
+   MOZONA TPV — Estilos de impresión térmica (v4.0.7-print-dynamic)
+   =====================================================================
+   v4.0.7: CSS print DINÁMICO según ticket_paper_width (48/58/80mm)
+   - El CSS dinámico se inyecta en runtime desde <PrintStyles />
+   - Aquí solo dejamos reglas base/fallback para 58mm
+   - @page { size: 58mm auto; margin: 0 } fuerza el formato del rollo
+   - Ancho efectivo de 48mm deja margen para los dientes de la tiquetera
+   - Solo se imprime el contenedor #thermal-ticket-print
+   - El resto de la UI se oculta con visibility:hidden
+   ===================================================================== */
+
+/* Vista previa en pantalla (parecido al papel real) */
+.thermal-ticket-preview {
+  width: 280px;
+  max-width: 100%;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 12px;
+  font-family: 'Courier New', Courier, monospace !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  color: #111111 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  white-space: pre;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: none;
+}
+
+.thermal-ticket-preview hr {
+  border: none;
+  border-top: 1px dashed #000000;
+  margin: 6px 0;
+}
+
+.thermal-ticket-preview .line {
+  width: 100%;
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: clip;
+  word-break: normal;
+  hyphens: none;
+}
+
+/* ★ v3.4.6: Impresión definitiva para 58mm con ancho efectivo 48mm */
+@media print {
+  /* Forzar formato de página a 58mm exactos sin márgenes blancos */
+  @page {
+    size: 58mm auto;
+    margin: 0mm;
+  }
+
+  /* Oculta toda la interfaz de la app al imprimir */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Muestra solo el contenedor del ticket */
+  #thermal-ticket-print,
+  #thermal-ticket-print * {
+    visibility: visible !important;
+  }
+
+  /* Compatibilidad: contenedor legacy */
+  .print-ticket,
+  .print-ticket * {
+    visibility: visible !important;
+  }
+
+  /* Posicionar el contenedor en la esquina superior izquierda */
+  #thermal-ticket-print {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 48mm !important;          /* Ancho real efectivo (margen para dientes) */
+    max-width: 48mm !important;
+    margin: 0 !important;
+    padding: 2mm !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    color: #000000 !important;
+    background: #ffffff !important;
+    white-space: pre !important;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: none;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Líneas del ticket sin wrapping */
+  #thermal-ticket-print .line,
+  .print-ticket .line {
+    width: 100% !important;
+    white-space: pre !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+    word-break: normal !important;
+    hyphens: none !important;
+  }
+
+  /* Compatibilidad con el selector antiguo */
+  .print-ticket {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 48mm !important;
+    max-width: 48mm !important;
+    margin: 0 !important;
+    padding: 2mm !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    color: #000000 !important;
+    background: #ffffff !important;
+    white-space: pre !important;
+  }
+
+  /* Separadores en tickets */
+  #thermal-ticket-print hr,
+  .print-ticket hr {
+    border: none !important;
+    border-top: 1px dashed #000000 !important;
+    margin: 4px 0 !important;
+  }
+
+  /* Ocultar explícitamente lo marcado como no-print */
+  .no-print {
+    display: none !important;
+  }
+
+  body, html, #root {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* =====================================================================
+   MOZONA TPV — Theme variables (v3.4.0)
+   Aplicadas al <html> por ThemeContext
+   ===================================================================== */
+
+:root {
+    --accent-color: #2563eb;
+    --accent-color-hover: #1d4ed8;
+    --button-size: 44px;
+    --grid-cols: 4;
+    --grid-gap: 8px;
+    --grid-item-size: 14px;
+}
+
+/* Light theme (default) */
+html[data-theme="light"] body {
+    --bg-page: #f8fafc;
+    --bg-card: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border: #e2e8f0;
+}
+
+/* Dark theme */
+html[data-theme="dark"] body {
+    --bg-page: #0f172a;
+    --bg-card: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border: #334155;
+    background: var(--bg-page) !important;
+    color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .bg-white {
+    background: var(--bg-card) !important;
+}
+
+html[data-theme="dark"] .bg-slate-50,
+html[data-theme="dark"] .bg-slate-100 {
+    background: #1e293b !important;
+    color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .text-slate-900,
+html[data-theme="dark"] .text-slate-800,
+html[data-theme="dark"] .text-slate-700 {
+    color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] .text-slate-600,
+html[data-theme="dark"] .text-slate-500,
+html[data-theme="dark"] .text-slate-400 {
+    color: var(--text-secondary) !important;
+}
+
+html[data-theme="dark"] .border-slate-200,
+html[data-theme="dark"] .border-slate-300 {
+    border-color: #334155 !important;
+}
+
+/* High contrast mode */
+html.high-contrast body {
+    filter: contrast(1.2) saturate(1.1);
+}
+
+html.high-contrast button {
+    border-width: 2px !important;
+}
+
+/* =====================================================================
+   MOZONA TPV — Modo "Hora Punta Ciega" (v3.5.0)
+   Adaptativo: detecta número de comandas pendientes y aplica
+   ergonomía extrema automáticamente.
+   ===================================================================== */
+
+/* Cuando el html tiene data-stress-level="high", todo se agranda,
+   se eliminan adornos, y se maximiza el contraste. */
+html[data-stress-level="high"] {
+    --accent-color: #ffffff;
+    --button-size: 72px;
+    --grid-cols: 3;
+}
+
+html[data-stress-level="high"] body {
+    background: #000000 !important;
+}
+
+html[data-stress-level="high"] .pos-grid .product-card {
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    border: 3px solid #fff !important;
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+    padding: 12px !important;
+}
+
+html[data-stress-level="high"] .product-card:hover,
+html[data-stress-level="high"] .product-card:active {
+    background: #ffffff !important;
+    color: #000000 !important;
+    transform: scale(1.05);
+}
+
+html[data-stress-level="high"] .order-panel {
+    background: #000 !important;
+    color: #fff !important;
+    border: 2px solid #444 !important;
+}
+
+html[data-stress-level="high"] .order-line {
+    padding: 14px 8px !important;
+    font-size: 18px !important;
+    border-bottom: 1px solid #333 !important;
+}
+
+html[data-stress-level="high"] .nav-chrome,
+html[data-stress-level="high"] .header-decorations,
+html[data-stress-level="high"] aside,
+html[data-stress-level="high"] .logo-deco {
+    display: none !important;
+}
+
+html[data-stress-level="high"] .grid-cols-2,
+html[data-stress-level="high"] .grid-cols-3,
+html[data-stress-level="high"] .grid-cols-4,
+html[data-stress-level="high"] .grid-cols-5,
+html[data-stress-level="high"] .grid-cols-6 {
+    grid-template-columns: repeat(var(--grid-cols, 3), minmax(0, 1fr)) !important;
+    gap: 12px !important;
+}
+
+/* Banner flotante "HORA PUNTA" */
+.stress-banner {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #dc2626;
+    color: white;
+    padding: 8px 24px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-size: 14px;
+    box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4);
+    z-index: 9999;
+    animation: pulse-stress 1.5s ease-in-out infinite;
+}
+@keyframes pulse-stress {
+    0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.85; transform: translateX(-50%) scale(1.03); }
+}

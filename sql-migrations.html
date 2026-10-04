@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>MOZONA TPV — Migraciones SQL v4.0.7</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f1f5f9;
+    min-height: 100vh;
+    padding: 32px 20px;
+  }
+  .container { max-width: 920px; margin: 0 auto; }
+  header { text-align: center; padding: 32px 0 48px; }
+  h1 { font-size: 36px; font-weight: 900; margin-bottom: 8px; }
+  h1 span { color: #10b981; }
+  .subtitle { color: #94a3b8; font-size: 16px; }
+  .file-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: border-color 0.2s;
+  }
+  .file-card:hover { border-color: rgba(16,185,129,0.4); }
+  .file-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+  .file-icon {
+    width: 36px; height: 36px;
+    background: #10b981;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 900; color: #052e1a;
+  }
+  .file-desc { color: #94a3b8; font-size: 14px; margin: 8px 0 20px; line-height: 1.6; }
+  .file-meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 16px;
+  }
+  .badge {
+    background: rgba(16,185,129,0.15);
+    color: #10b981;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .badge.warn { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .badge.info { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  .badge.danger { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .url-box {
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    color: #10b981;
+    word-break: break-all;
+    margin-bottom: 12px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #10b981;
+    color: #052e1a;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    transition: background 0.2s;
+    margin-right: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  .btn:hover { background: #059669; }
+  .btn.secondary { background: #334155; color: #f1f5f9; }
+  .btn.secondary:hover { background: #475569; }
+  pre.code {
+    background: #000;
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 16px;
+    border: 1px solid rgba(255,255,255,0.05);
+    max-height: 300px;
+  }
+  .step {
+    background: rgba(16,185,129,0.08);
+    border-left: 4px solid #10b981;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 8px;
+  }
+  .step strong { color: #10b981; display: block; margin-bottom: 4px; }
+  .footer { text-align: center; padding: 40px 0 20px; color: #64748b; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>MOZONA TPV — Migraciones SQL</h1>
+    <p class="subtitle">v4.0.7 · Soft Deletes + RLS estricto + Auditoría</p>
+  </header>
+
+  <div class="file-card">
+    <div class="file-title">
+      <div class="file-icon">SQL</div>
+      43_soft_deletes_robust.sql
+    </div>
+    <div class="file-meta">
+      <span class="badge">CRÍTICO</span>
+      <span class="badge info">28 KB</span>
+      <span class="badge">VERIFIED</span>
+    </div>
+    <div class="file-desc">
+      Script SQL principal con tests integrados. Crea tabla <code>customers</code>,
+      añade <code>deleted_at</code> a <code>orders</code> y <code>pre_bills</code>,
+      triggers anti hard-delete, 6 RPCs idempotentes, RLS multi-tenant, vistas
+      activas y tabla <code>audit_log</code>.
+    </div>
+    <div class="url-box">https://raw.githubusercontent.com/ryad12345/mozona-tpv-v2/gh-pages/43_soft_deletes_robust.sql</div>
+    <a href="https://raw.githubusercontent.com/ryad12345/mozona-tpv-v2/gh-pages/43_soft_deletes_robust.sql" class="btn" target="_blank">Ver SQL</a>
+    <a href="https://raw.githubusercontent.com/ryad12345/mozona-tpv-v2/gh-pages/43_soft_deletes_robust.sql?download=1" class="btn secondary" download>Descargar</a>
+    <button class="btn secondary" onclick="copyUrl('43_soft_deletes_robust.sql')">Copiar URL</button>
+  </div>
+
+  <div class="file-card">
+    <div class="file-title">
+      <div class="file-icon">SQL</div>
+      43_TESTS_MANUALES.sql
+    </div>
+    <div class="file-meta">
+      <span class="badge warn">OPCIONAL</span>
+      <span class="badge info">7.7 KB</span>
+      <span class="badge">VERIFIED</span>
+    </div>
+    <div class="file-desc">
+      Tests end-to-end (TEST 1-4) para verificar manualmente que cada pieza
+      funciona: hard-delete bloqueado, RLS cross-tenant, vistas activas, RPC
+      idempotente.
+    </div>
+    <div class="url-box">https://raw.githubusercontent.com/ryad12345/mozona-tpv-v2/gh-pages/43_TESTS_MANUALES.sql</div>
+    <a href="https://raw.githubusercontent.com/ryad12345/mozona-tpv-v2/gh-pages/43_TESTS_MANUALES.sql" class="btn" target="_blank">Ver SQL</a>
+    <a href="https://raw.githubusercontent.com/ryad12345/mozona-tpv-v2/gh-pages/43_TESTS_MANUALES.sql?download=1" class="btn secondary" download>Descargar</a>
+    <button class="btn secondary" onclick="copyUrl('43_TESTS_MANUALES.sql')">Copiar URL</button>
+  </div>
+
+  <div class="file-card">
+    <div class="file-title">
+      <div class="file-icon">DOC</div>
+      README_SOFT_DELETES.md
+    </div>
+    <div class="file-meta">
+      <span class="badge info">DOC</span>
+      <span class="badge info">11 KB</span>
+    </div>
+    <div class="file-desc">
+      Guía completa pieza por pieza. Instalación paso a paso, código completo
+      de cada componente, amenazas mitigadas, comandos de rollback.
+    </div>
+    <div class="url-box">https://raw.githubusercontent.com/ryad12345/mozona-tpv-v2/gh-pages/README_SOFT_DELETES.md</div>
+    <a href="https://raw.githubusercontent.com/ryad12345/mozona-tpv-v2/gh-pages/README_SOFT_DELETES.md" class="btn" target="_blank">Ver markdown</a>
+    <a href="https://raw.githubusercontent.com/ryad12345/mozona-tpv-v2/gh-pages/README_SOFT_DELETES.md?download=1" class="btn secondary" download>Descargar</a>
+    <button class="btn secondary" onclick="copyUrl('README_SOFT_DELETES.md')">Copiar URL</button>
+  </div>
+
+  <div class="file-card">
+    <div class="file-title">Instalación rápida (5 pasos)</div>
+    <div class="step">
+      <strong>PASO 1 — Abre Supabase SQL Editor</strong>
+      <a href="https://supabase.com/dashboard/project/hcqkpokodrqimkulporw/sql" target="_blank" style="color:#10b981">https://supabase.com/dashboard/project/hcqkpokodrqimkulporw/sql</a>
+    </div>
+    <div class="step">
+      <strong>PASO 2 — New Query</strong>
+      Click en <code>+ New Query</code>
+    </div>
+    <div class="step">
+      <strong>PASO 3 — Pega el SQL #43</strong>
+      Copia el contenido de <code>43_soft_deletes_robust.sql</code> (botón "Ver SQL" arriba)
+    </div>
+    <div class="step">
+      <strong>PASO 4 — Run (Ctrl+Enter)</strong>
+      Espera ~5 segundos. Output esperado:
+      <pre class="code">═══════════════════════════════════════════════════════════════
+  MOZONA TPV v4.0.7 — Migración SQL #43 APLICADA
+═══════════════════════════════════════════════════════════════
+  RLS habilitado: customers=t orders=t pre_bills=t audit_log=t
+  Triggers activos (esperado 6): 6
+  RPCs creadas    (esperado 6): 6
+  Índices totales (esperado >=12): 18
+  Vistas creadas  (esperado 3): 3
+═══════════════════════════════════════════════════════════════
+  ✓ TODOS LOS TESTS PASAN</pre>
+    </div>
+    <div class="step">
+      <strong>PASO 5 (Opcional) — Tests manuales</strong>
+      Ejecuta <code>43_TESTS_MANUALES.sql</code> para validar end-to-end
+    </div>
+  </div>
+
+  <div class="footer">
+    MOZONA TPV v4.0.7 · Última actualización: <span id="date"></span>
+  </div>
+</div>
+
+<script>
+  document.getElementById('date').textContent = new Date().toLocaleString('es-ES');
+  function copyUrl(file) {
+    const url = 'https://raw.githubusercontent.com/ryad12345/mozona-tpv-v2/gh-pages/' + file;
+    navigator.clipboard.writeText(url).then(() => {
+      alert('URL copiada:\n\n' + url);
+    }).catch(() => {
+      prompt('Copia esta URL:', url);
+    });
+  }
+</script>
+</body>
+</html>
